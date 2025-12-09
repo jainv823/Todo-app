@@ -2,6 +2,7 @@ import express from "express";
 import logger from "../logger.js";
 import morgan from "morgan";
 import healthCheckRoute from "./routes/healthCheck.route.js"
+import tasksRoute from "./routes/tasks.routes.js"
 
 const app = express();
 const morganFormat = ":method :url :status :response-time ms";
@@ -25,6 +26,7 @@ app.use(
 
 
 app.use("/api/v1/healthCheck",healthCheckRoute)
+app.use("/api/v1/tasks",tasksRoute)
 
 
 export default app;
