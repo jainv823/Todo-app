@@ -15,8 +15,19 @@ const addTask = async (req, res) => {
     logger.info(`Task added successfully: ${task}`);
   } catch (error) {
     res.status(400).json({ message: error.message });
-    (`Error adding task: ${error.message}`);
+    logger.error(`Error adding task: ${error.message}`);
   }
 };
 
-export { addTask };
+const getAllTasks = async (req, res) => {
+  try {
+    const data = await Task.find();
+    logger.info(data);
+    res.status(200).json({ tasks: data });
+  } catch (error) {
+    logger.error(`Error featching: ${error.message}`);
+    res.status(400).json({message: error.message})
+  }
+};
+
+export { addTask, getAllTasks };
