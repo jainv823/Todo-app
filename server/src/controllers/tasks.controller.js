@@ -37,6 +37,10 @@ const updateTask = async (req, res) => {
     res.status(400).json({ error: "Name or status is required" });
   }
   try {
+    const task = await Task.findById(id);
+    if (!task) {
+      throw new Error(`Task with id ${id} not found`);
+    }
     const updatedTask = await Task.findByIdAndUpdate(
       id,
       { name, status },
@@ -50,4 +54,20 @@ const updateTask = async (req, res) => {
   }
 };
 
-export { addTask, getAllTasks, updateTask };
+const deleteTask = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const task = await Task.findById(id);
+    if (!task) {
+      throw new Error(`Task with id ${id} not found`);
+    }
+    const deletedTask = await Task.findByIdAndDelete(id);
+    res.status(201).json({ taskDeleted: deletedTask.id });
+    logger.info(`Task deleted successfully: ${deletedTask.id}`);
+  } catch (error) {
+    res.status(404).json({ Error: error.message });
+    logger.error(`Error while deleting the task: ${error.message}`);
+  }
+};
+
+export { addTask, getAllTasks, updateTask, deleteTask };
