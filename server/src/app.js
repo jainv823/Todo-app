@@ -1,6 +1,7 @@
 import express from "express";
 import logger from "../logger.js";
 import morgan from "morgan";
+import cors from "cors";
 import healthCheckRoute from "./routes/healthCheck.route.js"
 import tasksRoute from "./routes/tasks.routes.js"
 
@@ -8,6 +9,14 @@ const app = express();
 const morganFormat = ":method :url :status :response-time ms";
 
 app.use(express.json());
+app.use(cors(
+  {
+    origin:"http://localhost:5173",
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization","Access-Control-Allow-Origin"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  }
+));
 app.use(
   morgan(morganFormat, {
     stream: {
